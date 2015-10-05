@@ -1055,16 +1055,17 @@ if (typeof Object.create !== "function") {
                 array = base.options.scrollPerPage === true ? base.pagesInArray : base.positionsInArray,
                 goal = base.newPosX,
                 closest = null;
+                range = 1 / (base.options.swipeThreshold / 100);
 
             $.each(array, function (i, v) {
-                if (goal - (base.itemWidth / 20) > array[i + 1] && goal - (base.itemWidth / 20) < v && base.moveDirection() === "left") {
+                if (goal - (base.itemWidth / range) > array[i + 1] && goal - (base.itemWidth / range) < v && base.moveDirection() === "left") {
                     closest = v;
                     if (base.options.scrollPerPage === true) {
                         base.currentItem = $.inArray(closest, base.positionsInArray);
                     } else {
                         base.currentItem = i;
                     }
-                } else if (goal + (base.itemWidth / 20) < v && goal + (base.itemWidth / 20) > (array[i + 1] || array[i] - base.itemWidth) && base.moveDirection() === "right") {
+                } else if (goal + (base.itemWidth / range) < v && goal + (base.itemWidth / range) > (array[i + 1] || array[i] - base.itemWidth) && base.moveDirection() === "right") {
                     if (base.options.scrollPerPage === true) {
                         closest = array[i + 1] || array[array.length - 1];
                         base.currentItem = $.inArray(closest, base.positionsInArray);
@@ -1201,7 +1202,7 @@ if (typeof Object.create !== "function") {
                 iterations += 1;
                 if (base.completeImg($lazyImg.get(0)) || isBackgroundImg === true) {
                     showImage();
-                } else if (iterations <= 100) {//if image loads in less than 10 seconds 
+                } else if (iterations <= 100) {//if image loads in less than 10 seconds
                     window.setTimeout(checkLazyImage, 100);
                 } else {
                     showImage();
@@ -1230,7 +1231,7 @@ if (typeof Object.create !== "function") {
                 iterations += 1;
                 if (base.completeImg($currentimg.get(0))) {
                     addHeight();
-                } else if (iterations <= 100) { //if image loads in less than 10 seconds 
+                } else if (iterations <= 100) { //if image loads in less than 10 seconds
                     window.setTimeout(checkImage, 100);
                 } else {
                     base.wrapperOuter.css("height", ""); //Else remove height attribute
@@ -1469,6 +1470,8 @@ if (typeof Object.create !== "function") {
         slideSpeed : 200,
         paginationSpeed : 800,
         rewindSpeed : 1000,
+
+        swipeThreshold : 5,
 
         autoPlay : false,
         stopOnHover : false,
